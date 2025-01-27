@@ -28,6 +28,12 @@ class _NotesTodoCardState extends State<NotesTodoCard> {
           20,
         ),
         gradient: AppColors().kMainCardColor,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.kWhiteColor,
+            blurRadius: 1,
+          )
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(

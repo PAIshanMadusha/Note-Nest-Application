@@ -31,6 +31,12 @@ class _ProgressCardState extends State<ProgressCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: AppColors().kMainCardColor,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.kWhiteColor,
+            blurRadius: 1,
+          )
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

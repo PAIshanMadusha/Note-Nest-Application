@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:note_nest_application/pages/home_page.dart';
+import 'package:note_nest_application/pages/notes_page.dart';
+import 'package:note_nest_application/pages/todo_list_page.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -12,8 +14,24 @@ class AppRouter {
       GoRoute(
         name: "HomePage",
         path: "/",
-        builder: (context, state){
+        builder: (context, state) {
           return const HomePage();
+        },
+      ),
+      //NotesPage
+      GoRoute(
+        name: "NotesPage",
+        path: "/notes",
+        builder: (context, state) {
+          return const NotesPage();
+        },
+      ),
+      //To-DoPage
+      GoRoute(
+        name: "To-DoPage",
+        path: "/todos",
+        builder: (context, state) {
+          return const TodoListPage();
         },
       ),
     ],

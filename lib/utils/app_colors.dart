@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   //Main Colors
   static const Color kBackGroundColor = Color(0xff202326);
-  static const Color kFActionButtonColor = Color.fromARGB(255, 23, 54, 85);
+  static const Color kFActionButtonColor = Color.fromARGB(255, 0, 128, 255);
   static const Color kWhiteColor = Color(0xffFFFFFF);
 
   //Greadient Colors
