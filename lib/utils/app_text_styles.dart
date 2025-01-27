@@ -5,14 +5,14 @@ class AppTextStyles {
 
   //Title
   static const TextStyle appTitle = TextStyle(
-    fontSize: 25,
+    fontSize: 35,
     fontWeight: FontWeight.bold,
     color: AppColors.kWhiteColor,
   );
 
   //Sub-Title
   static const TextStyle appSubTitle = TextStyle(
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: FontWeight.bold,
     color: AppColors.kWhiteColor,
   );
@@ -26,8 +26,8 @@ class AppTextStyles {
 
   //Small Description
   static const TextStyle appSmallDescription = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
     color: AppColors.kWhiteColor,
   );
 
