@@ -1,0 +1,69 @@
+import 'package:hive/hive.dart';
+import 'package:note_nest_application/models/note_model.dart';
+import 'package:uuid/uuid.dart';
+
+class NoteService {
+  List<NoteModel> allNotes = [
+    NoteModel(
+      id: const Uuid().v4(),
+      title: "MeetingNotes",
+      category: "Work",
+      content: "Discussed Project deadline and deliverables",
+      date: DateTime.now(),
+    ),
+    NoteModel(
+      id: const Uuid().v4(),
+      title: "Action Games",
+      category: "Games",
+      content: "Played an Action Game at Mid-Night",
+      date: DateTime.now(),
+    ),
+    NoteModel(
+      id: const Uuid().v4(),
+      title: "A Flutter Project",
+      category: "Project",
+      content: "Developing a flutter project in nowdays",
+      date: DateTime.now(),
+    ),
+  ];
+
+  //Create the database refrence for notes
+  final _myBox = Hive.box('notes');
+
+  //Check new user or not
+  Future <bool> isNewUser() async{
+    return _myBox.isEmpty;
+  } 
+
+  //Create initails notes if the box is empty
+  Future <void> createdInitialNotes () async{
+    if(_myBox.isEmpty){
+      await _myBox.put("notes", allNotes);
+    }
+  }
+
+  //Load notes
+  Future <List<NoteModel>> loadNotes() async{
+
+    final dynamic notes = _myBox.get("notes");
+
+    if(notes != null && notes is List<dynamic>){
+      return notes.cast<NoteModel>().toList();
+    }
+    return [];
+  }
+
+  //Category
+  Map <String, List<NoteModel>> getNotesByCategoryMap(List<NoteModel>allNotes){
+    final Map<String, List <NoteModel>> notesByCategory = {};
+
+    for(final note in allNotes){
+      if(notesByCategory.containsKey(note.category)){
+        notesByCategory[note.category]!.add(note);
+      }else{
+        notesByCategory[note.category] = [note];
+      }
+    }
+    return notesByCategory;
+  }
+}
