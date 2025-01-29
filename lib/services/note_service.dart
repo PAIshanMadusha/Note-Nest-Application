@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:note_nest_application/models/note_model.dart';
 import 'package:uuid/uuid.dart';

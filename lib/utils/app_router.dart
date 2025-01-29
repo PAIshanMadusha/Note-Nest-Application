@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:note_nest_application/pages/create_a_new_note_page.dart';
 import 'package:note_nest_application/pages/home_page.dart';
-import 'package:note_nest_application/pages/note_by_category.dart';
+import 'package:note_nest_application/pages/note_by_category_page.dart';
 import 'package:note_nest_application/pages/notes_page.dart';
 import 'package:note_nest_application/pages/todo_list_page.dart';
 
@@ -42,6 +43,17 @@ class AppRouter {
         builder: (context, state) {
           final String category = state.extra as String;
           return NoteByCategory(category: category);
+        },
+      ),
+      //Create a New Note
+      GoRoute(
+        name: "Crate a Note",
+        path: "/create-note",
+        builder: (context, state) {
+          final isNewCategoryPage = state.extra as bool;
+          return CreateANewNotePage(
+            isNewCategory: isNewCategoryPage,
+          );
         },
       ),
     ],
