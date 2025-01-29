@@ -5,6 +5,7 @@ import 'package:note_nest_application/utils/app_colors.dart';
 import 'package:note_nest_application/utils/app_constants.dart';
 import 'package:note_nest_application/utils/app_router.dart';
 import 'package:note_nest_application/utils/app_text_styles.dart';
+import 'package:note_nest_application/widgets/notes_card.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -87,6 +88,44 @@ class _NotesPageState extends State<NotesPage> {
               "Notes Categories",
               style: AppTextStyles.appSubTitle,
             ),
+            SizedBox(
+              height: AppConstants.kSizedBoxValue,
+            ),
+            allNotes.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Text(
+                      "No Notes Are Available, Please Add+ Some Notes",
+                      style: AppTextStyles.appBody,
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: AppConstants.kDefaultPadding,
+                      mainAxisSpacing: AppConstants.kDefaultPadding,
+                      childAspectRatio: 6 / 4,
+                    ),
+                    itemCount: notesWithCategory.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          //Notes by Category
+                          AppRouter.router.push(
+                            "/category",
+                            extra: notesWithCategory.keys.elementAt(index),
+                          );
+                        },
+                        child: NotesCard(
+                          noteCategory: notesWithCategory.keys.elementAt(index),
+                          noOfNotes:
+                              notesWithCategory.keys.elementAt(index).length,
+                        ),
+                      );
+                    },
+                  ),
           ],
         ),
       ),
