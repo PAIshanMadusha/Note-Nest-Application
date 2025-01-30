@@ -54,6 +54,15 @@ class NoteService {
     return [];
   }
 
+  //Add a New Note
+  Future <void> addNote (NoteModel note) async{
+    try{
+      final dynamic allNotes = await _myBox.get('notes');
+      allNotes.add(note);
+      await _myBox.put('notes', allNotes);
+    }catch(error){}
+  }
+
   //Category
   Map<String, List<NoteModel>> getNotesByCategoryMap(List<NoteModel> allNotes) {
     final Map<String, List<NoteModel>> notesByCategory = {};
