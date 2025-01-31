@@ -189,7 +189,7 @@ class _CreateANewNotePageState extends State<CreateANewNotePage> {
                         }
                         return null;
                       },
-                      textAlign: TextAlign.justify,
+                      textAlign: TextAlign.start,
                       maxLines: 4,
                       style: AppTextStyles.appButton,
                       decoration: InputDecoration(
@@ -221,13 +221,13 @@ class _CreateANewNotePageState extends State<CreateANewNotePage> {
                         return null;
                       },
                       maxLines: 12,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.start,
                       style: AppTextStyles.appDescription,
                       decoration: InputDecoration(
                         hintText: "Content",
                         hintStyle: AppTextStyles.appTitle.copyWith(
                           fontSize: 32,
-                          color: const Color.fromARGB(255, 36, 52, 68),
+                          color: AppColors.kBackGroundColor,
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
