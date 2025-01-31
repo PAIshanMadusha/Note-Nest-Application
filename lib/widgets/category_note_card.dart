@@ -8,13 +8,15 @@ class CategoryNoteCard extends StatefulWidget {
   final String noteContent;
   final Future Function() removeNote;
   final Future Function() editNote;
+  final Future Function() viewSingleNote;
 
   const CategoryNoteCard({
     super.key,
     required this.noteTitle,
     required this.noteContent,
     required this.removeNote,
-    required this.editNote,
+    required this.editNote, 
+    required this.viewSingleNote,
   });
 
   @override
@@ -34,25 +36,32 @@ class _CategoryNoteCardState extends State<CategoryNoteCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.noteTitle,
-              style: AppTextStyles.appButton,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: AppConstants.kSizedBoxValue,
-            ),
-            Text(
-              widget.noteContent,
-              style: AppTextStyles.appSmallDescription.copyWith(
-                // ignore: deprecated_member_use
-                color: AppColors.kWhiteColor.withOpacity(0.7),
+            GestureDetector(
+              onTap: widget.viewSingleNote,
+              child: Column(
+                children: [
+                  Text(
+                    widget.noteTitle,
+                    style: AppTextStyles.appButton,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: AppConstants.kSizedBoxValue,
+                  ),
+                  Text(
+                    widget.noteContent,
+                    style: AppTextStyles.appSmallDescription.copyWith(
+                      // ignore: deprecated_member_use
+                      color: AppColors.kWhiteColor.withOpacity(0.7),
+                    ),
+                    maxLines: 7,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              maxLines: 7,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
             ),
             Spacer(),
             Row(

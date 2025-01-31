@@ -5,6 +5,7 @@ import 'package:note_nest_application/pages/create_a_new_note_page.dart';
 import 'package:note_nest_application/pages/home_page.dart';
 import 'package:note_nest_application/pages/note_by_category_page.dart';
 import 'package:note_nest_application/pages/notes_page.dart';
+import 'package:note_nest_application/pages/single_note_page.dart';
 import 'package:note_nest_application/pages/todo_list_page.dart';
 import 'package:note_nest_application/pages/update_note_page.dart';
 
@@ -69,6 +70,15 @@ class AppRouter {
           );
         },
       ),
+      //NoteView
+      GoRoute(
+        name: "NoteView",
+        path: "/single-note",
+        builder: (context, state) {
+          final NoteModel note = state.extra as NoteModel;
+          return SingleNotePage(note: note);
+        },
+      )
     ],
   );
 }
