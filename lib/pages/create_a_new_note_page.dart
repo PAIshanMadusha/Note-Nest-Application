@@ -221,13 +221,13 @@ class _CreateANewNotePageState extends State<CreateANewNotePage> {
                         return null;
                       },
                       maxLines: 12,
-                      textAlign: TextAlign.justify,
+                      textAlign: TextAlign.center,
                       style: AppTextStyles.appDescription,
                       decoration: InputDecoration(
                         hintText: "Content",
                         hintStyle: AppTextStyles.appTitle.copyWith(
                           fontSize: 32,
-                          color: AppColors.kBackGroundColor,
+                          color: const Color.fromARGB(255, 36, 52, 68),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
