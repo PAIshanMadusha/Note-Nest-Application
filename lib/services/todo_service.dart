@@ -25,7 +25,7 @@ class TodoService {
   //Datebase reference for Todo
   final _myBox = Hive.box('todos');
 
-  //Check weather the user is new
+  //Check weather the user is NewUser
   Future<bool> isNewUser() async{
     return _myBox.isEmpty; 
   }
