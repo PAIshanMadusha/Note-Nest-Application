@@ -58,4 +58,16 @@ class TodoService {
       error.toString();
     }
   }
+
+  //Add a Todo
+  Future<void> addTodo(TodoModel todo) async {
+    try {
+      final dynamic allTodos = await _myBox.get('todos');
+      allTodos.add(todo);
+
+      await _myBox.put('todos', allTodos);
+    } catch (error) {
+      error.toString();
+    }
+  }
 }

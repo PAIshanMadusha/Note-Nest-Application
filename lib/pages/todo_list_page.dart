@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:note_nest_application/app_helpers/snackbar.dart';
 import 'package:note_nest_application/models/todo_model.dart';
 import 'package:note_nest_application/services/todo_service.dart';
 import 'package:note_nest_application/utils/app_colors.dart';
+import 'package:note_nest_application/utils/app_constants.dart';
 import 'package:note_nest_application/utils/app_router.dart';
 import 'package:note_nest_application/utils/app_text_styles.dart';
 import 'package:note_nest_application/widgets/completed_tab.dart';
@@ -23,6 +25,14 @@ class _TodoListPageState extends State<TodoListPage>
   late List<TodoModel> completedTodos = [];
 
   TodoService todoService = TodoService();
+
+  final TextEditingController _taskController = TextEditingController();
+  @override
+  void dispose() {
+    _taskController.dispose();
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -48,6 +58,146 @@ class _TodoListPageState extends State<TodoListPage>
         incompletedTodos = allTodos.where((todo) => !todo.isDone).toList();
         //Completed
         completedTodos = allTodos.where((todo) => todo.isDone).toList();
+      },
+    );
+  }
+
+  //Method to Add Task
+  void _addaTask() async {
+    try {
+      if (_taskController.text.isNotEmpty) {
+        final TodoModel newTodo = TodoModel(
+          title: _taskController.text,
+          date: DateTime.now(),
+          time: DateTime.now(),
+          isDone: false,
+        );
+        await todoService.addTodo(newTodo);
+        setState(() {
+          allTodos.add(newTodo);
+          incompletedTodos.add(newTodo);
+        });
+        AppHelper.showSnackBar(context, "Task Added Successfully!");
+        Navigator.of(context).pop();
+      }
+    } catch (error) {
+      error.toString();
+    }
+  }
+
+  void openMessageModel(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                15,
+              ),
+              side: BorderSide(
+                color: AppColors.kBackGroundColor,
+                width: 1,
+              )),
+          // ignore: deprecated_member_use
+          backgroundColor: AppColors.kWhiteColor.withOpacity(0.9),
+          contentPadding: EdgeInsets.zero,
+          title: Padding(
+            padding: const EdgeInsets.all(
+              AppConstants.kDefaultPadding - 18,
+            ),
+            child: Text(
+              "Add a Task",
+              style: AppTextStyles.appTitle.copyWith(
+                color: AppColors.kBackGroundColor,
+                fontWeight: FontWeight.w800,
+                fontSize: 22,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          content: Padding(
+            padding: EdgeInsets.all(
+              AppConstants.kDefaultPadding,
+            ),
+            child: TextField(
+              controller: _taskController,
+              style: AppTextStyles.appSmallDescription.copyWith(
+                color: AppColors.kBackGroundColor,
+              ),
+              decoration: InputDecoration(
+                // ignore: deprecated_member_use
+                fillColor: AppColors.kCardColorG1.withOpacity(0.2),
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      10,
+                    ),
+                    borderSide: BorderSide(
+                      color: AppColors.kCardColorG1,
+                      width: 2,
+                    )),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      20,
+                    ),
+                    borderSide: BorderSide(
+                      color: AppColors.kCardColorG1,
+                      width: 2,
+                    )),
+                hintText: "Enter Your Task",
+                hintStyle: AppTextStyles.appButton.copyWith(
+                  color: AppColors.kCardColorG1,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                backgroundColor: WidgetStatePropertyAll(
+                  AppColors.kFActionButtonColor,
+                ),
+              ),
+              onPressed: () {
+                _addaTask();
+              },
+              child: Text(
+                "Add a Task",
+                style: AppTextStyles.appSmallDescription,
+              ),
+            ),
+            SizedBox(
+              width: AppConstants.kSizedBoxValue - 15,
+            ),
+            TextButton(
+              style: ButtonStyle(
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      100,
+                    ),
+                  ),
+                ),
+                backgroundColor: WidgetStatePropertyAll(
+                  AppColors.kBackGroundColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Cancel",
+                style: AppTextStyles.appSmallDescription,
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -88,7 +238,9 @@ class _TodoListPageState extends State<TodoListPage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          openMessageModel(context);
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
