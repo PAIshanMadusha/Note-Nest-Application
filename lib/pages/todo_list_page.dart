@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_nest_application/models/todo_model.dart';
 import 'package:note_nest_application/services/todo_service.dart';
 import 'package:note_nest_application/utils/app_colors.dart';
+import 'package:note_nest_application/utils/app_router.dart';
 import 'package:note_nest_application/utils/app_text_styles.dart';
 import 'package:note_nest_application/widgets/completed_tab.dart';
 import 'package:note_nest_application/widgets/todo_tab.dart';
@@ -32,7 +33,7 @@ class _TodoListPageState extends State<TodoListPage>
 
   void _checkIfUserIsNew() async {
     final bool isNewUser = await todoService.isNewUser();
-    if(isNewUser){
+    if (isNewUser) {
       await todoService.createInitialTodos();
     }
     _loadTodos();
@@ -55,6 +56,17 @@ class _TodoListPageState extends State<TodoListPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            AppRouter.router.push("/");
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: Text(
+          "To-Do List",
+          style: AppTextStyles.appSubTitle,
+        ),
         bottom: TabBar(
           controller: _tabController,
           dividerColor: AppColors.kBackGroundColor,
@@ -95,9 +107,11 @@ class _TodoListPageState extends State<TodoListPage>
         children: [
           TodoTab(
             incompletedTodos: incompletedTodos,
+            completedTodos: completedTodos,
           ),
           CompletedTab(
             completedTodos: completedTodos,
+            incompletedTodos: incompletedTodos,
           ),
         ],
       ),
