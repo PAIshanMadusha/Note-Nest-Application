@@ -11,7 +11,7 @@ class TodoTab extends StatefulWidget {
   final List<TodoModel> completedTodos;
   const TodoTab({
     super.key,
-    required this.incompletedTodos, 
+    required this.incompletedTodos,
     required this.completedTodos,
   });
 
@@ -21,7 +21,7 @@ class TodoTab extends StatefulWidget {
 
 class _TodoTabState extends State<TodoTab> {
   //Mark a Todo as Done
-  void _markTodoAsDone(TodoModel todo) async{
+  void _markTodoAsDone(TodoModel todo) async {
     try {
       final TodoModel updatedTodo = TodoModel(
         title: todo.title,
@@ -44,7 +44,7 @@ class _TodoTabState extends State<TodoTab> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      widget.incompletedTodos.sort((a,b) => a.time.compareTo(b.time));
+      widget.incompletedTodos.sort((a, b) => a.time.compareTo(b.time));
     });
     return Padding(
       padding: EdgeInsets.all(
@@ -60,10 +60,22 @@ class _TodoTabState extends State<TodoTab> {
               itemCount: widget.incompletedTodos.length,
               itemBuilder: (context, index) {
                 final TodoModel todo = widget.incompletedTodos[index];
-                return TodoCard(
-                  todo: todo,
-                  isCompleted: false,
-                  onCheckBoxMarked: () => _markTodoAsDone(todo),
+                return Dismissible(
+                  key: Key(
+                    todo.id.toString(),
+                  ),
+                  onDismissed: (direction) {
+                    setState(() {
+                      widget.incompletedTodos.removeAt(index);
+                      TodoService().deleteTodo(todo);
+                    });
+                    AppHelper.showSnackBar(context, "Task Deleted Successfully!");
+                  },
+                  child: TodoCard(
+                    todo: todo,
+                    isCompleted: false,
+                    onCheckBoxMarked: () => _markTodoAsDone(todo),
+                  ),
                 );
               },
             ),

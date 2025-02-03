@@ -70,4 +70,15 @@ class TodoService {
       error.toString();
     }
   }
+  //Delete a Task
+  Future <void> deleteTodo(TodoModel todo) async {
+    try{
+      final dynamic allTodos = await _myBox.get('todos');
+      allTodos.remove(todo);
+
+      await _myBox.put('todos', allTodos);
+    }catch(error){
+      error.toString();
+    }
+  }
 }

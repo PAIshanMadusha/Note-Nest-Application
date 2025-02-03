@@ -11,7 +11,7 @@ class CompletedTab extends StatefulWidget {
   final List<TodoModel> incompletedTodos;
   const CompletedTab({
     super.key,
-    required this.completedTodos, 
+    required this.completedTodos,
     required this.incompletedTodos,
   });
 
@@ -60,10 +60,22 @@ class _CompletedTabState extends State<CompletedTab> {
               itemCount: widget.completedTodos.length,
               itemBuilder: (context, index) {
                 final TodoModel todo = widget.completedTodos[index];
-                return TodoCard(
-                  todo: todo,
-                  isCompleted: true,
-                  onCheckBoxMarked: () => _markTodoAsDone(todo),
+                return Dismissible(
+                  key: Key(
+                    todo.id.toString(),
+                  ),
+                  onDismissed: (direction) {
+                    setState(() {
+                      widget.completedTodos.removeAt(index);
+                      TodoService().deleteTodo(todo);
+                    });
+                    AppHelper.showSnackBar(context, "Task Deleted Successfully!");
+                  },
+                  child: TodoCard(
+                    todo: todo,
+                    isCompleted: true,
+                    onCheckBoxMarked: () => _markTodoAsDone(todo),
+                  ),
                 );
               },
             ),
