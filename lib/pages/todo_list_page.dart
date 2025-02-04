@@ -77,8 +77,12 @@ class _TodoListPageState extends State<TodoListPage>
           allTodos.add(newTodo);
           incompletedTodos.add(newTodo);
         });
-        AppHelper.showSnackBar(context, "Task Added Successfully!");
-        Navigator.of(context).pop();
+        if(mounted) {
+          AppHelper.showSnackBar(context, "Task Added Successfully!");
+        }
+        if(mounted) {
+          Navigator.of(context).pop();
+        }
       }
     } catch (error) {
       error.toString();

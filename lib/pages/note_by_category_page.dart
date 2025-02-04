@@ -44,10 +44,12 @@ class _NoteByCategoryState extends State<NoteByCategory> {
     try {
       await noteService.deleteNote(id);
       if (context.mounted) {
+        // ignore: use_build_context_synchronously
         AppHelper.showSnackBar(context, "Note Deleted Successfully!");
       }
     } catch (error) {
       if (context.mounted) {
+        // ignore: use_build_context_synchronously
         AppHelper.showSnackBar(context, "Error: $error");
       }
     }

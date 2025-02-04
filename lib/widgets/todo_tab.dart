@@ -30,7 +30,9 @@ class _TodoTabState extends State<TodoTab> {
         isDone: true,
       );
       await TodoService().markAsDone(updatedTodo);
-      AppHelper.showSnackBar(context, "Marked As Done!");
+      if(mounted) {
+        AppHelper.showSnackBar(context, "Marked As Done!");
+      }
       setState(() {
         widget.incompletedTodos.remove(todo);
         widget.completedTodos.add(updatedTodo);

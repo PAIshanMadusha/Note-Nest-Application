@@ -34,7 +34,9 @@ class _CompletedTabState extends State<CompletedTab> {
         widget.completedTodos.remove(todo);
         widget.incompletedTodos.add(updatedTodo);
       });
-      AppHelper.showSnackBar(context, "Marked As Undone!");
+      if(mounted) {
+        AppHelper.showSnackBar(context, "Marked As Undone!");
+      }
       AppRouter.router.go("/todos");
     } catch (error) {
       error.toString();

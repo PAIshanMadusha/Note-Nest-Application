@@ -60,7 +60,9 @@ class NoteService {
       final dynamic allNotes = await _myBox.get('notes');
       allNotes.add(note);
       await _myBox.put('notes', allNotes);
-    }catch(error){}
+    }catch(error){
+      error.toString();
+    }
   }
 
   //Category
