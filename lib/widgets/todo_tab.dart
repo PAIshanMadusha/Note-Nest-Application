@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_nest_application/app_helpers/snackbar.dart';
 import 'package:note_nest_application/models/todo_model.dart';
+import 'package:note_nest_application/pages/todo_inharited_widget.dart';
 import 'package:note_nest_application/services/todo_service.dart';
 import 'package:note_nest_application/utils/app_constants.dart';
 import 'package:note_nest_application/utils/app_router.dart';
@@ -48,41 +49,45 @@ class _TodoTabState extends State<TodoTab> {
     setState(() {
       widget.incompletedTodos.sort((a, b) => a.time.compareTo(b.time));
     });
-    return Padding(
-      padding: EdgeInsets.all(
-        AppConstants.kDefaultPadding - 5,
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: AppConstants.kSizedBoxValue,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.incompletedTodos.length,
-              itemBuilder: (context, index) {
-                final TodoModel todo = widget.incompletedTodos[index];
-                return Dismissible(
-                  key: Key(
-                    todo.id.toString(),
-                  ),
-                  onDismissed: (direction) {
-                    setState(() {
-                      widget.incompletedTodos.removeAt(index);
-                      TodoService().deleteTodo(todo);
-                    });
-                    AppHelper.showSnackBar(context, "Task Deleted Successfully!");
-                  },
-                  child: TodoCard(
-                    todo: todo,
-                    isCompleted: false,
-                    onCheckBoxMarked: () => _markTodoAsDone(todo),
-                  ),
-                );
-              },
+    return TodoInharitedWidget(
+      todos: widget.incompletedTodos,
+      onTodosChanged: (){},
+      child: Padding(
+        padding: EdgeInsets.all(
+          AppConstants.kDefaultPadding - 5,
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: AppConstants.kSizedBoxValue,
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.incompletedTodos.length,
+                itemBuilder: (context, index) {
+                  final TodoModel todo = widget.incompletedTodos[index];
+                  return Dismissible(
+                    key: Key(
+                      todo.id.toString(),
+                    ),
+                    onDismissed: (direction) {
+                      setState(() {
+                        widget.incompletedTodos.removeAt(index);
+                        TodoService().deleteTodo(todo);
+                      });
+                      AppHelper.showSnackBar(context, "Task Deleted Successfully!");
+                    },
+                    child: TodoCard(
+                      todo: todo,
+                      isCompleted: false,
+                      onCheckBoxMarked: () => _markTodoAsDone(todo),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

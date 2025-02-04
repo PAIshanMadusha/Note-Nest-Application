@@ -54,7 +54,7 @@ class _TodoCardState extends State<TodoCard> {
         ),
         trailing: Checkbox(
           value: widget.isCompleted,
-          onChanged: (value) => widget.onCheckBoxMarked(),
+          onChanged: (bool? value) => widget.onCheckBoxMarked(),
         ),
       ),
     );

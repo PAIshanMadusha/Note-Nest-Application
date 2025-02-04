@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_nest_application/app_helpers/snackbar.dart';
 import 'package:note_nest_application/models/todo_model.dart';
+import 'package:note_nest_application/pages/todo_inharited_widget.dart';
 import 'package:note_nest_application/services/todo_service.dart';
 import 'package:note_nest_application/utils/app_colors.dart';
 import 'package:note_nest_application/utils/app_constants.dart';
@@ -27,6 +28,7 @@ class _TodoListPageState extends State<TodoListPage>
   TodoService todoService = TodoService();
 
   final TextEditingController _taskController = TextEditingController();
+  
   @override
   void dispose() {
     _taskController.dispose();
@@ -62,7 +64,7 @@ class _TodoListPageState extends State<TodoListPage>
     );
   }
 
-  //Method to Add Task
+  //Method to Add Tasks
   void _addaTask() async {
     try {
       if (_taskController.text.isNotEmpty) {
@@ -73,16 +75,19 @@ class _TodoListPageState extends State<TodoListPage>
           isDone: false,
         );
         await todoService.addTodo(newTodo);
-        setState(() {
-          allTodos.add(newTodo);
-          incompletedTodos.add(newTodo);
-        });
+        _loadTodos();
+        // ignore: use_build_context_synchronously
+        final todosInherit = TodoInharitedWidget.of(context);
+        if(todosInherit != null){
+          todosInherit.onTodosChanged();
+        }
         if(mounted) {
           AppHelper.showSnackBar(context, "Task Added Successfully!");
         }
         if(mounted) {
           Navigator.of(context).pop();
         }
+        _taskController.clear();
       }
     } catch (error) {
       error.toString();
@@ -193,6 +198,7 @@ class _TodoListPageState extends State<TodoListPage>
                 ),
               ),
               onPressed: () {
+                _taskController.clear();
                 Navigator.of(context).pop();
               },
               child: Text(
@@ -208,68 +214,72 @@ class _TodoListPageState extends State<TodoListPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
+    return TodoInharitedWidget(
+      todos: allTodos,
+      onTodosChanged: _loadTodos,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () {
+              AppRouter.router.push("/");
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+          title: Text(
+            "To-Do List",
+            style: AppTextStyles.appSubTitle,
+          ),
+          bottom: TabBar(
+            controller: _tabController,
+            dividerColor: AppColors.kBackGroundColor,
+            indicatorColor: AppColors.kCircleColorG2,
+            tabs: [
+              Tab(
+                child: Text(
+                  "To-Do",
+                  style: AppTextStyles.appButton,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Completed",
+                  style: AppTextStyles.appButton,
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
-            AppRouter.router.push("/");
+            openMessageModel(context);
           },
-          icon: Icon(Icons.arrow_back),
-        ),
-        title: Text(
-          "To-Do List",
-          style: AppTextStyles.appSubTitle,
-        ),
-        bottom: TabBar(
-          controller: _tabController,
-          dividerColor: AppColors.kBackGroundColor,
-          indicatorColor: AppColors.kCircleColorG2,
-          tabs: [
-            Tab(
-              child: Text(
-                "To-Do",
-                style: AppTextStyles.appButton,
-              ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: AppColors.kWhiteColor,
+              width: 2,
             ),
-            Tab(
-              child: Text(
-                "Completed",
-                style: AppTextStyles.appButton,
-              ),
+          ),
+          child: Icon(
+            Icons.add,
+            color: AppColors.kWhiteColor,
+            size: 35,
+          ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            TodoTab(
+              incompletedTodos: incompletedTodos,
+              completedTodos: completedTodos,
+            ),
+            CompletedTab(
+              completedTodos: completedTodos,
+              incompletedTodos: incompletedTodos,
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openMessageModel(context);
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: AppColors.kWhiteColor,
-            width: 2,
-          ),
-        ),
-        child: Icon(
-          Icons.add,
-          color: AppColors.kWhiteColor,
-          size: 35,
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          TodoTab(
-            incompletedTodos: incompletedTodos,
-            completedTodos: completedTodos,
-          ),
-          CompletedTab(
-            completedTodos: completedTodos,
-            incompletedTodos: incompletedTodos,
-          ),
-        ],
       ),
     );
   }

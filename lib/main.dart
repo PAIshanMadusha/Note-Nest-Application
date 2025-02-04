@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:note_nest_application/models/note_model.dart';
 import 'package:note_nest_application/models/todo_model.dart';
+import 'package:note_nest_application/pages/todo_inharited_widget.dart';
 import 'package:note_nest_application/utils/app_router.dart';
 import 'package:note_nest_application/utils/app_theme_data.dart';
 
@@ -27,15 +28,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: "NoteNest",
-      debugShowCheckedModeBanner: false,
-      theme: AppThemeData.darkTheme.copyWith(
-        textTheme: GoogleFonts.poppinsTextTheme(
-          Theme.of(context).textTheme,
+    return TodoInharitedWidget(
+      todos: [],
+      onTodosChanged: (){},
+      child: MaterialApp.router(
+        title: "NoteNest",
+        debugShowCheckedModeBanner: false,
+        theme: AppThemeData.darkTheme.copyWith(
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
+        routerConfig: AppRouter.router,
       ),
-      routerConfig: AppRouter.router,
     );
   }
 }
